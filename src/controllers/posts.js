@@ -17,6 +17,26 @@ export const getPosts = async (req, res) => {
   }
 };
 
+export const putPosts = async (req, res) => {
+  try {
+    const id = await req.params.id;
+
+    console.log("id", id);
+
+    const newPassword = await req.body.password;
+
+    console.log("pass", newPassword);
+
+    PostModel.findByIdAndUpdate(id, {
+      password: "ssdf",
+    });
+
+    res.status(200).json("update");
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+
 export const createPost = async (req, res) => {
   try {
     const newPost = req.body;

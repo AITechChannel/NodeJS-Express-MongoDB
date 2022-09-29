@@ -16,4 +16,4 @@ const account = new Schema(
 
 const AccountsModel = mongoose.model("account", account);
 
-AccountsModel.create({ username: "anh" }).then((data) => console.log(data));
+// AccountsModel.create({ username: "anh" }).then((data) => console.log(data));
