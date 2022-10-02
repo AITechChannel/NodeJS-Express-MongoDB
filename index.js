@@ -6,10 +6,14 @@ import routerPosts from "./src/routers/routerPosts.js";
 
 import mongoose from "mongoose";
 
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const app = express();
 const URI =
   "mongodb+srv://admin:oC7zw4GYl8euaFfH@cluster0.d2b7x.mongodb.net/data?retryWrites=true&w=majority";
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
