@@ -19,19 +19,22 @@ export const getPosts = async (req, res) => {
 
 export const putPosts = async (req, res) => {
   try {
-    const id = await req.params.id;
-
-    console.log("id", id);
-
-    const newPassword = await req.body.password;
-
-    console.log("pass", newPassword);
-
-    PostModel.findByIdAndUpdate(id, {
-      password: "ssdf",
+    const id = req.params.id;
+    const newPassword = req.body.password;
+    await PostModel.findByIdAndUpdate(id, {
+      password: newPassword,
     });
+    res.status(200).json({ id, newPassword });
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
 
-    res.status(200).json("update");
+export const deletePost = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await PostModel.findByIdAndDelete(id);
+    res.status(200).json("delete");
   } catch (err) {
     res.status(500).json({ error: err });
   }

@@ -18,6 +18,7 @@ app.use(cors());
 app.get("/", routerPosts);
 app.post("/", routerPosts);
 app.put("/:id", routerPosts);
+app.delete("/:id", routerPosts);
 
 mongoose
   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
