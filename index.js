@@ -17,7 +17,23 @@ const port = process.env.PORT;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
-app.use(cors());
+
+// app.use(function (req, res, next) {
+//   // Mọi domain
+//   res.header("Access-Control-Allow-Origin", "*");
+
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   res.header("Content-Disposition", "sdfds");
+//   next();
+// });
+app.use(
+  cors({
+    exposedHeaders: ["Content-Type", "Authorization", "Content-Disposition"],
+  })
+);
 
 app.get("/", routerPosts);
 app.post("/", routerPosts);
