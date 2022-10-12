@@ -2,7 +2,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 
 import express from "express";
-import routerPosts from "./src/routers/routerPosts.js";
+import routerUser from "./src/routers/routerUser.js";
 
 import mongoose from "mongoose";
 
@@ -19,10 +19,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
 app.use(cors());
 
-app.get("/", routerPosts);
-app.post("/", routerPosts);
-app.put("/:id", routerPosts);
-app.delete("/:id", routerPosts);
+app.get("/", routerUser);
+app.post("/resgister", routerUser);
+app.post("/login", routerUser);
 
 mongoose
   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
