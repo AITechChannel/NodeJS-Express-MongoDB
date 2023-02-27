@@ -2,6 +2,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 
 import express from "express";
+import routerCategory from "./src/routers/routerCategory.js";
 import routerPosts from "./src/routers/routerPosts.js";
 
 import mongoose from "mongoose";
@@ -12,33 +13,20 @@ dotenv.config();
 
 const app = express();
 const URI =
-  "mongodb+srv://admin:oC7zw4GYl8euaFfH@cluster0.d2b7x.mongodb.net/data?retryWrites=true&w=majority";
+  "mongodb+srv://TuanAnhDoan:KzKIGohN9ppir8WW@cluster0.eagizdl.mongodb.net/?retryWrites=true&w=majority";
 const port = process.env.PORT;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
+app.use(cors());
 
-// app.use(function (req, res, next) {
-//   // Mọi domain
-//   res.header("Access-Control-Allow-Origin", "*");
+// app.get("/", routerPosts);
+// app.post("/", routerPosts);
+// app.put("/:id", routerPosts);
+// app.delete("/:id", routerPosts);
 
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   res.header("Content-Disposition", "sdfds");
-//   next();
-// });
-app.use(
-  cors({
-    exposedHeaders: ["Content-Type", "Authorization", "Content-Disposition"],
-  })
-);
-
-app.get("/", routerPosts);
-app.post("/", routerPosts);
-app.put("/:id", routerPosts);
-app.delete("/:id", routerPosts);
+app.use("/posts", routerPosts);
+app.use("/category", routerCategory);
 
 mongoose
   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })

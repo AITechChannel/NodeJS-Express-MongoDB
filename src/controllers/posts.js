@@ -7,7 +7,7 @@ export const getPosts = async (req, res) => {
     //   password: "123",
     // });
     // post.save();
-    res.header("Content-Disposition", "sdfdsfdsfds");
+    // res.header("Content-Disposition", "sdfdsfdsfds");
     const a = req.params;
     const posts = await PostModel.find();
     console.log("params", a);
@@ -26,7 +26,6 @@ export const putPosts = async (req, res) => {
     //   password: newPassword,
     // });
     res.header("Access-Control-Allow-Credentials", true);
-
     res.status(200).json({ id, newPassword });
   } catch (err) {
     res.status(500).json({ error: err });
@@ -46,13 +45,6 @@ export const deletePost = async (req, res) => {
 export const createPost = async (req, res) => {
   try {
     const newPost = req.body;
-
-    // console.log(newPost);
-
-    // const post = new PostModel(newPost);
-
-    // await post.save();
-
     res.status(200).json(newPost);
   } catch (err) {
     res.status(500).json({ error: err });
