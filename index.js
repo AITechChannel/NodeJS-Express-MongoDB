@@ -4,6 +4,8 @@ import cors from "cors";
 import express from "express";
 import routerCategory from "./src/routers/routerCategory.js";
 import routerPosts from "./src/routers/routerPosts.js";
+import routerUpload from "./src/routers/upload.js";
+import routerDownload from "./src/routers/routerDownload.js";
 
 import mongoose from "mongoose";
 
@@ -27,6 +29,8 @@ app.use(cors());
 
 app.use("/posts", routerPosts);
 app.use("/category", routerCategory);
+app.use("/upload", routerUpload);
+app.use("/download", routerDownload);
 
 mongoose
   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
