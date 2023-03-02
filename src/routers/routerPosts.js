@@ -1,19 +1,21 @@
-import express from "express";
+import express from 'express';
 import {
   getPosts,
   createPost,
   putPosts,
   deletePost
-} from "../controllers/posts.js";
+} from '../controllers/posts.js';
+
+import uploadMiddleware from '../middleware/uploadMiddleware.js';
 
 const routerPosts = express.Router();
 
-routerPosts.get("/", getPosts);
+routerPosts.get('/', getPosts);
 
-routerPosts.post("/", createPost);
+routerPosts.post('/', uploadMiddleware, createPost);
 
-routerPosts.put("/:id", putPosts);
+routerPosts.put('/:id', uploadMiddleware, putPosts);
 
-routerPosts.delete("/:id", deletePost);
+routerPosts.delete('/:id', deletePost);
 
 export default routerPosts;

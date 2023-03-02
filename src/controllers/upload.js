@@ -1,9 +1,8 @@
 export const upload = async (req, res, next) => {
   try {
     if (req.files == undefined) {
-      return res.status(400).send({ message: "Please upload a file!" });
+      return res.status(400).send({ message: 'Please upload a file!' });
     }
-
     res.status(200).send({
       message: `Uploaded the file successfully:  + `
     });
