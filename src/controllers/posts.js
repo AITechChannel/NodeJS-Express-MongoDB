@@ -29,48 +29,60 @@ export const getPosts = async (req, res) => {
 };
 
 export const putPosts = async (req, res) => {
-  // try {
-  // fs.readdir('./uploads', (err, files) => {
-  //   console.log('🚀 ::::: fs.readdir ::::: files:', files);
-  //   // const fileName = files.find((file) => file === req.params.name);
-  //   // if (!fileName) {
-  //   //   res.status(404).json('file not found');
-  //   //   return;
-  // });
-  const remove_file_id = req.body.remove_file_id;
+  try {
+    // fs.readdir('./uploads', (err, files) => {
+    //   console.log('🚀 ::::: fs.readdir ::::: files:', files);
+    //   // const fileName = files.find((file) => file === req.params.name);
+    //   // if (!fileName) {
+    //   //   res.status(404).json('file not found');
+    //   //   return;
+    // });
 
-  const { id } = req.params;
-  // const title = req.body.title;
-  // const category_id = req.body.category_id;
-  // const remove_file_id = req.body.remove_file_id;
-  // const category = await CategoryModel.findById(category_id);
+    const { id } = req.params;
+    const post = await PostModel.findById(id);
+    if (!post) res.status(404).json('Post not found!');
 
-  const post = await PostModel.findById(id);
+    const { title, category_ids, remove_file_id } = req.body;
+    const categories = await CategoryModel.find()
+      .where('_id')
+      .in(category_ids)
+      .exec();
 
-  post.files.forEach((file) => {
-    if (file._id.toString() !== remove_file_id) return;
-    console.log(file.name);
-    fs.unlinkSync('./uploads/imgtest.png');
-    // if (fs.exists(file.name)) {
-    // }
-  });
-  // const files = req.files.map((item) => {
-  //   return {
-  //     name: uuidv4() + item.originalname,
-  //     path: item.path
-  //   };
-  // });
-  // const data = {
-  //   title,
-  //   categories: [category],
-  //   files
-  // };
-  // const post = await PostModel.findByIdAndUpdate(id, data);
-  await PostModel.findById(id);
-  res.status(200).json(post);
-  // } catch (err) {
-  //   res.status(500).json({ error: err });
-  // }
+    const fileStorage = post.files ? post.files : [];
+
+    const fileRemains = fileStorage.map((file) => {
+      if (file._id.toString() !== remove_file_id) return;
+
+      if (fs.existsSync(file.name)) {
+        fs.unlinkSync(`./uploads/${file.name}`);
+        return;
+      }
+    });
+
+    const fileRemainsRemoveUndefined = fileRemains.filter(
+      (file) => file !== undefined
+    );
+
+    const fileUploads = req.files.map((item) => {
+      return {
+        name: item.originalname,
+        path: item.path
+      };
+    });
+
+    const files = fileRemainsRemoveUndefined.concat(fileUploads);
+
+    await PostModel.findByIdAndUpdate(id, {
+      title,
+      categories,
+      files
+    });
+
+    const postUpdated = await PostModel.findById(id);
+    res.status(200).json(postUpdated);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
 };
 
 export const deletePost = async (req, res) => {
@@ -85,21 +97,26 @@ export const deletePost = async (req, res) => {
 
 export const createPost = async (req, res) => {
   try {
-    const title = req.body.title;
-    const category_id = req.body.category_id;
-    const category = await CategoryModel.findById(category_id);
+    const { title, category_ids } = req.body;
+
+    const categories = await CategoryModel.find()
+      .where('_id')
+      .in(category_ids)
+      .exec();
+
     const files = req.files.map((item) => {
       return {
-        name: uuidv4() + item.originalname,
+        name: item.originalname,
         path: item.path
       };
     });
     const post = new PostModel({
       title,
-      categories: [category],
-      files: files
+      categories,
+      files
     });
     post.save();
+
     const newPost = await PostModel.find();
     res.status(200).json(newPost);
   } catch (err) {
