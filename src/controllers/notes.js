@@ -89,9 +89,10 @@ export const deleteNote = async (req, res) => {
 
 export const createNote = async (req, res) => {
   try {
-    const { title } = req.body;
+    const { title, content } = req.body;
     const note = new NoteModel({
-      title
+      title,
+      content
     });
     note.save();
 

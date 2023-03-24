@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '30mb' }));
 app.use(cors());
 
 app.use('/posts', routerPosts);
-app.use('/note', routerNotes);
+app.use('/notes', routerNotes);
 app.use('/category', routerCategory);
 app.use('/upload', routerUpload);
 app.use('/download', routerDownload);

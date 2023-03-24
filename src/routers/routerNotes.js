@@ -10,12 +10,12 @@ import uploadMiddleware from '../middleware/uploadMiddleware.js';
 
 const routerNotes = express.Router();
 
-routerNotes.get('/list', getNotes);
+routerNotes.get('/', getNotes);
 
-routerNotes.post('/list', uploadMiddleware, createNote);
+routerNotes.post('/', uploadMiddleware, createNote);
 
-routerNotes.put('/list/:id', uploadMiddleware, putNotes);
+routerNotes.put('/:id', uploadMiddleware, putNotes);
 
-routerNotes.delete('/list/:id', deleteNote);
+routerNotes.delete('/:id', deleteNote);
 
 export default routerNotes;
