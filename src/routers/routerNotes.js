@@ -3,7 +3,8 @@ import {
   getNotes,
   createNote,
   putNotes,
-  deleteNote
+  deleteNote,
+  getNoteDetail
 } from '../controllers/notes.js';
 
 import uploadMiddleware from '../middleware/uploadMiddleware.js';
@@ -11,6 +12,8 @@ import uploadMiddleware from '../middleware/uploadMiddleware.js';
 const routerNotes = express.Router();
 
 routerNotes.get('/', getNotes);
+
+routerNotes.get('/:id', getNoteDetail);
 
 routerNotes.post('/', uploadMiddleware, createNote);
 

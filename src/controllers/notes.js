@@ -18,11 +18,21 @@ export const getNotes = async (req, res) => {
 
           res.status(200).json({
             data: notes,
-            current_page: page,
+            current_page: parseInt(page),
             total_page: Math.ceil(count / perPage)
           });
         });
       });
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+
+export const getNoteDetail = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const note = await NoteModel.findById(id);
+    res.status(200).json(note);
   } catch (err) {
     res.status(500).json({ error: err });
   }
