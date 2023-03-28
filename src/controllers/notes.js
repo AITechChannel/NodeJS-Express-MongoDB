@@ -1,8 +1,4 @@
-import { CategoryModel } from '../models/CategoryModel.js';
 import { NoteModel } from '../models/NoteModel.js';
-import fs from 'fs';
-
-import { v4 as uuidv4 } from 'uuid';
 
 export const getNotes = async (req, res) => {
   try {
@@ -41,45 +37,8 @@ export const getNoteDetail = async (req, res) => {
 export const putNotes = async (req, res) => {
   try {
     const { id } = req.params;
-    const note = await NoteModel.findById(id);
-    if (!note) res.status(404).json('Note not found!');
-
-    const { title, category_ids, remove_file_id } = req.body;
-    const categories = await CategoryModel.find()
-      .where('_id')
-      .in(category_ids)
-      .exec();
-
-    const fileStorage = note.files ? note.files : [];
-
-    const fileRemains = fileStorage.map((file) => {
-      if (file._id.toString() !== remove_file_id) return;
-
-      if (fs.existsSync(file.name)) {
-        fs.unlinkSync(`./uploads/${file.name}`);
-        return;
-      }
-    });
-
-    const fileRemainsRemoveUndefined = fileRemains.filter(
-      (file) => file !== undefined
-    );
-
-    const fileUploads = req.files.map((item) => {
-      return {
-        name: item.originalname,
-        path: item.path
-      };
-    });
-
-    const files = fileRemainsRemoveUndefined.concat(fileUploads);
-
-    await NoteModel.findByIdAndUpdate(id, {
-      title,
-      categories,
-      files
-    });
-
+    const note = req.body;
+    await NoteModel.findByIdAndUpdate(id, note);
     const noteUpdated = await NoteModel.findById(id);
     res.status(200).json(noteUpdated);
   } catch (err) {
