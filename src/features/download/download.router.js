@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { download } from '../controllers/download.js';
+import { download } from './download.controller.js';
 
 const routerDownload = express.Router();
 

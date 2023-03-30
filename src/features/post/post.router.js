@@ -4,9 +4,9 @@ import {
   createPost,
   putPosts,
   deletePost
-} from '../controllers/posts.js';
+} from './post.controller.js';
 
-import uploadMiddleware from '../middleware/uploadMiddleware.js';
+import uploadMiddleware from '../../middleware/upload.middleware.js';
 
 const routerPosts = express.Router();
 

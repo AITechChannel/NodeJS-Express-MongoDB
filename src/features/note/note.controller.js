@@ -1,4 +1,4 @@
-import { NoteModel } from '../models/NoteModel.js';
+import { NoteModel } from './note.model.js';
 
 export const getNotes = async (req, res) => {
   try {
@@ -63,7 +63,7 @@ export const createNote = async (req, res) => {
       title,
       content
     });
-    note.save();
+    await note.save();
 
     const newNote = await NoteModel.find();
     res.status(200).json(newNote);

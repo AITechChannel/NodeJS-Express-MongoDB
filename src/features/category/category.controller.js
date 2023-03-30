@@ -1,4 +1,4 @@
-import { CategoryModel } from "../models/CategoryModel.js";
+import { CategoryModel } from './category.model.js';
 
 export const getListCategory = async (req, res) => {
   try {
@@ -47,7 +47,7 @@ export const deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
     await CategoryModel.findByIdAndDelete(id);
-    res.status(200).json({ id, message: "sucsess" });
+    res.status(200).json({ id, message: 'sucsess' });
   } catch (err) {
     res.status(500).json({ error: err });
   }

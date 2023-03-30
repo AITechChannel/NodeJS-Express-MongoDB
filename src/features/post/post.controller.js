@@ -1,5 +1,5 @@
-import { CategoryModel } from '../models/CategoryModel.js';
-import { PostModel } from '../models/PostModel.js';
+import { CategoryModel } from '../category/category.model.js';
+import { PostModel } from './post.model.js';
 import fs from 'fs';
 
 import { v4 as uuidv4 } from 'uuid';

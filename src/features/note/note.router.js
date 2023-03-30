@@ -5,9 +5,9 @@ import {
   putNotes,
   deleteNote,
   getNoteDetail
-} from '../controllers/notes.js';
+} from '../note/note.controller.js';
 
-import uploadMiddleware from '../middleware/uploadMiddleware.js';
+import uploadMiddleware from '../../middleware/upload.middleware.js';
 
 const routerNotes = express.Router();
 
