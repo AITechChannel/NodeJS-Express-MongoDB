@@ -3,9 +3,8 @@ import { NoteModel } from './note.model.js';
 export const getNotes = async (req, res) => {
   try {
     const { page = 1, limit, perPage = 10 } = req.query;
-    const fieldFilter = req.query ? req.query : {};
 
-    NoteModel.find(fieldFilter)
+    NoteModel.find({ auth_id: res.locals.auth_id })
       .skip(limit * page - limit)
       .limit(limit)
       .exec((err, notes) => {
@@ -59,12 +58,8 @@ export const deleteNote = async (req, res) => {
 export const createNote = async (req, res) => {
   try {
     const { title, content } = req.body;
-    const note = new NoteModel({
-      title,
-      content
-    });
+    const note = new NoteModel({ title, content, auth_id: res.locals.auth_id });
     await note.save();
-
     const newNote = await NoteModel.find();
     res.status(200).json(newNote);
   } catch (err) {

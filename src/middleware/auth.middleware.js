@@ -4,8 +4,6 @@ const verifyTokenMiddleware = async (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
 
-    console.log('🚀 ::: token:', token);
-
     if (!token) {
       res.status(401).json('token is required');
     }
@@ -16,7 +14,7 @@ const verifyTokenMiddleware = async (req, res, next) => {
           message: 'Unauthorized!'
         });
       }
-      // req.userId = decoded.id;
+      res.locals.auth_id = decoded.id;
       next();
     });
   } catch (error) {
