@@ -1,14 +1,14 @@
 import { UserModel } from './user.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { UserReFreshToken } from '../logout/logout.model.js';
 
-export const verifyUserMiddleware = async (req, res, next) => {
+export const verifyUserLoginMiddleware = async (req, res, next) => {
   try {
     const user = await UserModel.findOne({
-      where: {
-        username: req.body.username
-      }
+      email: req.body.email
     });
+
     if (!user) {
       return res.status(404).send({ message: 'User Not found.' });
     }
@@ -30,6 +30,8 @@ export const verifyUserMiddleware = async (req, res, next) => {
       expiresIn: '30d'
     });
 
+    await new UserReFreshToken({ refresh_token: refreshToken }).save();
+
     // let authorities = [];
     // const roles = await user.getRoles();
     // for (let i = 0; i < roles.length; i++) {
@@ -39,7 +41,8 @@ export const verifyUserMiddleware = async (req, res, next) => {
     return res.status(200).send({
       status: 'success',
       token: token,
-      refresh_token: refreshToken
+      refresh_token: refreshToken,
+      userInfo: { username: user.username, email: user.email, role: user.roles }
     });
   } catch (error) {
     return res.status(500).send({ message: error.message });
@@ -48,7 +51,11 @@ export const verifyUserMiddleware = async (req, res, next) => {
 
 export const refreshTokenMiddleware = async (req, res, next) => {
   try {
-    const { refreshToken } = req.body;
+    // const { refreshToken } = req.body;
+
+    const refreshToken = await UserReFreshToken.find({
+      refresh_token: req.body.refreshToken
+    });
 
     if (!refreshToken) {
       res.status(401).json('refreshToken is required');

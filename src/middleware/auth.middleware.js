@@ -2,10 +2,10 @@ import jwt from 'jsonwebtoken';
 
 const verifyTokenMiddleware = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = req.headers?.authorization?.split(' ')[1];
 
     if (!token) {
-      res.status(401).json('token is required');
+      return res.status(401).json('token is required');
     }
 
     jwt.verify(token, 'TAD_SECRECT_KEY', (err, decoded) => {
@@ -21,4 +21,5 @@ const verifyTokenMiddleware = async (req, res, next) => {
     res.status(500).send({ message: error.message });
   }
 };
+
 export default verifyTokenMiddleware;

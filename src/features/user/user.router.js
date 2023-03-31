@@ -12,7 +12,7 @@ import {
 import userValidate from './user.validate.js';
 
 import {
-  verifyUserMiddleware,
+  verifyUserLoginMiddleware,
   refreshTokenMiddleware
 } from './user.authenticate.js';
 
@@ -24,7 +24,7 @@ routerUser.get('/:id', getUserDetail);
 
 routerUser.post('/register', userValidate, createUser);
 
-routerUser.post('/login', verifyUserMiddleware, login);
+routerUser.post('/login', verifyUserLoginMiddleware, login);
 
 routerUser.post('/refresh_token', refreshTokenMiddleware, refreshToken);
 

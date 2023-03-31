@@ -4,7 +4,6 @@ const schema = new mongoose.Schema({
   username: String,
   email: String,
   password: String,
-  // uid: String,
   roles: Number
 });
 

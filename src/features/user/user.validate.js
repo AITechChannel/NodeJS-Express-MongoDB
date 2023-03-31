@@ -10,7 +10,7 @@ const userMiddleWare = async (req, res, next) => {
     return;
   }
 
-  let token = req.session.token;
+  const token = req.session.token;
   if (!token) {
     return res.status(403).send({
       message: 'No token provided!'
