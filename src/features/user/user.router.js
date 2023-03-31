@@ -26,7 +26,7 @@ routerUser.post('/register', userValidate, createUser);
 
 routerUser.post('/login', verifyUserMiddleware, login);
 
-routerUser.post('/refreshToken', refreshTokenMiddleware, refreshToken);
+routerUser.post('/refresh_token', refreshTokenMiddleware, refreshToken);
 
 routerUser.put('/:id', putUsers);
 

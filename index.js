@@ -30,7 +30,7 @@ app.use(cors());
 
 app.use('/posts', verifyTokenMiddleware, routerPosts);
 app.use('/users', routerUsers);
-app.use('/notes', routerNotes);
+app.use('/notes', verifyTokenMiddleware, routerNotes);
 app.use('/category', verifyTokenMiddleware, routerCategory);
 app.use('/upload', routerUpload);
 app.use('/download', routerDownload);
