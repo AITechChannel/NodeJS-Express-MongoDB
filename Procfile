@@ -1,1 +1,1 @@
-web:nodemon index.js
+worker: node index.js

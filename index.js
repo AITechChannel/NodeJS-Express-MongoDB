@@ -22,7 +22,7 @@ const options = {
 const app = express();
 const URI =
   'mongodb+srv://TuanAnhDoan:KzKIGohN9ppir8WW@cluster0.eagizdl.mongodb.net/?retryWrites=true&w=majority';
-const port = process.env.PORT;
+const port = process.env.PORT || 10000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: '30mb' }));
