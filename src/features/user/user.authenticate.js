@@ -16,6 +16,7 @@ export const verifyUserLoginMiddleware = async (req, res, next) => {
       req.body.password,
       user.password
     );
+
     if (!passwordIsValid) {
       return res.status(401).send({
         message: 'Invalid Password!'
@@ -23,7 +24,7 @@ export const verifyUserLoginMiddleware = async (req, res, next) => {
     }
 
     const token = jwt.sign({ id: user.id }, process.env.SECRECT_KEY, {
-      expiresIn: '7d' // 10s
+      expiresIn: '1d' // 10s
     });
 
     const refreshToken = jwt.sign(
@@ -55,8 +56,6 @@ export const verifyUserLoginMiddleware = async (req, res, next) => {
 
 export const refreshTokenMiddleware = async (req, res, next) => {
   try {
-    // const { refreshToken } = req.body;
-
     const refreshToken = await UserReFreshToken.find({
       refresh_token: req.body.refreshToken
     });
@@ -66,7 +65,7 @@ export const refreshTokenMiddleware = async (req, res, next) => {
     }
 
     jwt.verify(
-      refreshToken,
+      req.body.refreshToken,
       process.env.SECRECT_REFRESH_KEY,
       (err, decoded) => {
         if (err) {
@@ -74,11 +73,9 @@ export const refreshTokenMiddleware = async (req, res, next) => {
             message: 'Unauthorized!'
           });
         }
-
         const newToken = jwt.sign({ id: decoded.id }, process.env.SECRECT_KEY, {
-          expiresIn: '7d'
+          expiresIn: '1d'
         });
-
         return res.status(200).json({
           token: newToken
         });
