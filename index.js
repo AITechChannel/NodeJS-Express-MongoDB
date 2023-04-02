@@ -21,8 +21,7 @@ const options = {
   autoClean: true
 };
 const app = express();
-const URI =
-  'mongodb+srv://TuanAnhDoan:KzKIGohN9ppir8WW@cluster0.eagizdl.mongodb.net/?retryWrites=true&w=majority';
+const URI = process.env.DATABASE_URL;
 const port = process.env.PORT || 10000;
 
 app.use(bodyParser.json());
