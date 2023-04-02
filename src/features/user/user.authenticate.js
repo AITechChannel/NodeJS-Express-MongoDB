@@ -22,13 +22,17 @@ export const verifyUserLoginMiddleware = async (req, res, next) => {
       });
     }
 
-    const token = jwt.sign({ id: user.id }, 'TAD_SECRECT_KEY', {
+    const token = jwt.sign({ id: user.id }, process.env.SECRECT_KEY, {
       expiresIn: '7d' // 10s
     });
 
-    const refreshToken = jwt.sign({ id: user.id }, 'TAD_SECRECT_KEY_REFRESH', {
-      expiresIn: '30d'
-    });
+    const refreshToken = jwt.sign(
+      { id: user.id },
+      process.env.SECRECT_REFRESH_KEY,
+      {
+        expiresIn: '30d'
+      }
+    );
 
     await new UserReFreshToken({ refresh_token: refreshToken }).save();
 
@@ -61,21 +65,25 @@ export const refreshTokenMiddleware = async (req, res, next) => {
       res.status(401).json('refreshToken is required');
     }
 
-    jwt.verify(refreshToken, 'TAD_SECRECT_KEY_REFRESH', (err, decoded) => {
-      if (err) {
-        return res.status(401).send({
-          message: 'Unauthorized!'
+    jwt.verify(
+      refreshToken,
+      process.env.SECRECT_REFRESH_KEY,
+      (err, decoded) => {
+        if (err) {
+          return res.status(401).send({
+            message: 'Unauthorized!'
+          });
+        }
+
+        const newToken = jwt.sign({ id: decoded.id }, process.env.SECRECT_KEY, {
+          expiresIn: '7d'
+        });
+
+        return res.status(200).json({
+          token: newToken
         });
       }
-
-      const newToken = jwt.sign({ id: decoded.id }, 'TAD_SECRECT_KEY', {
-        expiresIn: '7d'
-      });
-
-      return res.status(200).json({
-        token: newToken
-      });
-    });
+    );
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }

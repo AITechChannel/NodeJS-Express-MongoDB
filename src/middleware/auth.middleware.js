@@ -8,7 +8,7 @@ const verifyTokenMiddleware = async (req, res, next) => {
       return res.status(401).json('token is required');
     }
 
-    jwt.verify(token, 'TAD_SECRECT_KEY', (err, decoded) => {
+    jwt.verify(token, process.env.SECRECT_KEY, (err, decoded) => {
       if (err) {
         return res.status(401).send({
           message: 'Unauthorized!'
