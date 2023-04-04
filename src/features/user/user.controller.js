@@ -66,9 +66,7 @@ export const createUser = async (req, res) => {
       password: bcrypt.hashSync(req.body.password, 8)
     });
     await user.save();
-
-    const newUser = await UserModel.find();
-    res.status(200).json(newUser);
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ error: err });
   }

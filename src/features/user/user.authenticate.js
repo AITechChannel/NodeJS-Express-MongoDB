@@ -24,7 +24,7 @@ export const verifyUserLoginMiddleware = async (req, res, next) => {
     }
 
     const token = jwt.sign({ id: user.id }, process.env.SECRECT_KEY, {
-      expiresIn: '1d' // 10s
+      expiresIn: '1d' // 1d
     });
 
     const refreshToken = jwt.sign(
