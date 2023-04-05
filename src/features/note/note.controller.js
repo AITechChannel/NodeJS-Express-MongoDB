@@ -1,3 +1,4 @@
+import { CategoryModel } from '../category/category.model.js';
 import { NoteModel } from './note.model.js';
 
 export const getNotes = async (req, res) => {
@@ -57,11 +58,19 @@ export const deleteNote = async (req, res) => {
 
 export const createNote = async (req, res) => {
   try {
-    const { title, content } = req.body;
-    const note = new NoteModel({ title, content, auth_id: res.locals.auth_id });
+    const { category_id } = req.body;
+    const categories = await CategoryModel.find()
+      .where('_id')
+      .in(category_id)
+      .exec();
+    console.log('🚀 ::: categories:', categories);
+    const note = new NoteModel({
+      ...req.body,
+      auth_id: res.locals.auth_id,
+      categories
+    });
     await note.save();
-    const newNote = await NoteModel.find();
-    res.status(200).json(newNote);
+    res.status(200).json(note);
   } catch (err) {
     res.status(500).json({ error: err });
   }

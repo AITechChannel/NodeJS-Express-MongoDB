@@ -32,7 +32,7 @@ app.use('/posts', verifyTokenMiddleware, routerPosts);
 app.use('/logout', verifyTokenMiddleware, routerLogout);
 app.use('/users', routerUsers);
 app.use('/notes', verifyTokenMiddleware, routerNotes);
-app.use('/category', verifyTokenMiddleware, routerCategory);
+app.use('/categories', verifyTokenMiddleware, routerCategory);
 app.use('/upload', routerUpload);
 app.use('/download', routerDownload);
 
