@@ -30,7 +30,8 @@ export const getUserDetail = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await UserModel.findById(id);
-    res.status(200).json(user);
+    const { username, email, roles } = user;
+    res.status(200).json({ username, email, roles });
   } catch (err) {
     res.status(500).json({ error: err });
   }
@@ -66,7 +67,8 @@ export const createUser = async (req, res) => {
       password: bcrypt.hashSync(req.body.password, 8)
     });
     await user.save();
-    res.status(200).json(user);
+    const { username, email, roles } = user;
+    res.status(200).json({ username, email, roles });
   } catch (err) {
     res.status(500).json({ error: err });
   }
