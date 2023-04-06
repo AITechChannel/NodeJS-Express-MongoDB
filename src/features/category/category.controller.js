@@ -49,7 +49,10 @@ export const deleteCategory = async (req, res) => {
 
 export const createCategory = async (req, res) => {
   try {
-    const newCategory = new CategoryModel(req.body);
+    const newCategory = new CategoryModel({
+      ...req.body,
+      auth_id: res.locals.auth_id
+    });
     await newCategory.save();
     res.status(200).json(newCategory);
   } catch (err) {
